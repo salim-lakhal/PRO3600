@@ -39,4 +39,5 @@ Pour visualiser le site voici les étapes à suivre :
   - npm install # Permet d'installer les dépendances
   - npm i react-router-dom # Permet d'installer des dépendances
   - npm start # Permet de lancer le site localement
+
 Le site devrait ensuite se lancer dans votre navigateur !
