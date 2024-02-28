@@ -38,6 +38,7 @@ Pour visualiser le site voici les étapes à suivre :
 - Ouvrir un terminal, se placer dans le dossier frontend et executer les commandes suivantes :
   - npm install # Permet d'installer les dépendances
   - npm i react-router-dom # Permet d'installer des dépendances
+  - npm run build # Permet de créer une version de production optimisée de l'application
   - npm start # Permet de lancer le site localement
 
 Le site devrait ensuite se lancer dans votre navigateur !
