@@ -6,7 +6,7 @@ const Home = () => {
     <div className="botStyle">
       {/* Speech Bubble */}
       {/*<div className="bubbleStyle">
-        Voici notre projet, on le mettra au fur et à mesure à jour pour ajouter des features.
+        Voici notre sytème de stockage decentralisé, vous pouvez deposer et retirer vos fichier en toute sécurité.
       </div>*/}
       
       {/* KryptoBot Logo */}
