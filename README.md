@@ -13,7 +13,7 @@ ensuite le choix entre laisser son fichier public ou restreindre son accès en d
 les conditions à respecter pour pouvoir y accéder.
 - Possible organisation des fichier sous forme de dossier.
 - Organisation des fichiers en utilisant des adresses uniques basées sur le contenu.
-- 
+  
 Gestion de l'Identité avec des ZKPs :
 - Mise en place d'un système d'authentification basé sur les ZKPs pour prouver
 l'identité des utilisateurs sans divulguer d'informations sensibles. Et ainsi leur
@@ -23,7 +23,7 @@ Smart Contract sur la Blockchain :
 - Développement de contrats intelligents sur la blockchain utilisant des ZKPs pour gérer
 les autorisations d'accès aux dossiers.
 - Smart contract permettant de générer les NFT.
-- 
+  
 Interface Utilisateur :
 - Création d'une interface utilisateur intuitive permettant aux utilisateurs d'interagir
 avec IPFS pour télécharger, stocker et partager des fichiers.
@@ -32,3 +32,11 @@ preuves d'identité pour accéder à des dossiers spécifiques.
 
 
 Lien vers l'ancien repository : https://github.com/dramob/PRO3600-Chainvault
+
+Pour visualiser le site voici les étapes à suivre :
+- Cloner le dossier sur son pc
+- Ouvrir un terminal, se placer dans le dossier frontend et executer les commandes suivantes :
+  - npm install # Permet d'installer les dépendances
+  - npm i react-router-dom # Permet d'installer des dépendances
+  - npm start # Permet de lancer le site localement
+Le site devrait ensuite se lancer dans votre navigateur !
