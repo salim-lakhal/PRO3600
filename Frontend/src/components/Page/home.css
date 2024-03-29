@@ -1,9 +1,29 @@
-.aboutText {
-  text-align: justify;
+.botStyle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 50px; /* Add space for the speech bubble */
 }
-.roundedRectangle {
-  border: 1px solid black;
-  border-radius: 10px;
+
+.bubbleStyle {
+  position: absolute;
+  bottom: 90%;
+  right: 50%;
+  transform: translateX(50%);
   padding: 10px;
-  margin-bottom: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin: 10px 0;
+  width: max-content;
+  max-width: 300px;
+}
+
+.logoStyle {
+  width: 800px;
+  height: auto;
+  margin-bottom: -30px;
+  opacity: 0.5;
 }
