@@ -17,7 +17,7 @@ const Header = () => {
           <h1 className="title">Stockage Décentralisé</h1>
           <a href="/home" className="nav-link">Home</a>        
           <a href="/depot" className="nav-link">Dépôt de fichier</a>
-          <a href="/dossier" className="nav-link">Créer un nouveau dossier</a>
+          <a href="/mesfichiers" className="nav-link">Mes fichiers</a>
         </div>
         <div className="header-right">
               <div className="wallet-info">

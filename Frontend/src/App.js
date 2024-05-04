@@ -3,7 +3,7 @@ import { WalletProvider } from './WalletProvider';
 import Arrivee from './components/Page/Arrivee'; 
 import Home from './components/Page/Home';
 import Depot from './components/Page/Depot';
-import Dossier from './components/Page/Dossier';
+import Mesfichiers from './components/Page/Mesfichiers';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
             <Route path="/" element={<Arrivee />} /> 
             <Route path="/home" element={<Home />} />
             <Route path="/depot" element={<Depot />} />
-            <Route path="/dossier" element={<Dossier />} /> 
+            <Route path="/mesfichiers" element={<Mesfichiers />} /> 
           </Routes>
       </WalletProvider>
   );

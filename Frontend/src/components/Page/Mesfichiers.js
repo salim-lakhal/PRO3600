@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
-import './Dossier.css' ;
+import './mesfichiers.css' ;
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 
 
 
-const Dossier = () => {
+const Mesfichiers = () => {
 
   return (
     <div>
@@ -27,4 +27,4 @@ const Dossier = () => {
   );
 };
 
-export default Dossier;
+export default Mesfichiers;
