@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import './depot.css';
 
 const Depot = () => {
+  const [fileUploaded, setFileUploaded] = useState(null);
+
   useEffect(() => {
     document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
       const dropZoneElement = inputElement.closest(".drop-zone");
@@ -15,6 +17,7 @@ const Depot = () => {
       inputElement.addEventListener("change", (e) => {
         if (inputElement.files.length) {
           updateThumbnail(dropZoneElement, inputElement.files[0]);
+          setFileUploaded(inputElement.files[0]);
         }
       });
 
@@ -35,6 +38,7 @@ const Depot = () => {
         if (e.dataTransfer.files.length) {
           inputElement.files = e.dataTransfer.files;
           updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+          setFileUploaded(e.dataTransfer.files[0]);
         }
 
         dropZoneElement.classList.remove("drop-zone--over");
@@ -42,39 +46,44 @@ const Depot = () => {
     });
   }, []);
 
-  /**
-   * Updates the thumbnail on a drop zone element.
-   *
-   * @param {HTMLElement} dropZoneElement
-   * @param {File} file
-   */
   function updateThumbnail(dropZoneElement, file) {
     let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
 
-    // First time - remove the prompt
-    if (dropZoneElement.querySelector(".drop-zone__prompt")) {
-      dropZoneElement.querySelector(".drop-zone__prompt").remove();
+    if (thumbnailElement) {
+      thumbnailElement.dataset.label = file.name;
+
+      if (file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+        };
+      } else {
+        thumbnailElement.style.backgroundImage = null;
+      }
     }
+  }
 
-    // First time - there is no thumbnail element, so lets create it
-    if (!thumbnailElement) {
-      thumbnailElement = document.createElement("div");
-      thumbnailElement.classList.add("drop-zone__thumb");
-      dropZoneElement.appendChild(thumbnailElement);
-    }
+  function handleUpload() {
+    if (fileUploaded) {
+      const formData = new FormData();
+      formData.append('file', fileUploaded);
 
-    thumbnailElement.dataset.label = file.name;
-
-    // Show thumbnail for image files
-    if (file.type.startsWith("image/")) {
-      const reader = new FileReader();
-
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
-      };
-    } else {
-      thumbnailElement.style.backgroundImage = null;
+      fetch('/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('File uploaded successfully');
+          setFileUploaded(null); // Réinitialiser le fichier après le téléchargement
+        } else {
+          console.error('File upload failed');
+        }
+      })
+      .catch(error => {
+        console.error('Error uploading file:', error);
+      });
     }
   }
 
@@ -82,15 +91,22 @@ const Depot = () => {
     <div > 
       <Header />
       <div className="depot-container"> 
-      <div className="botStyle1">
-        {/* KryptoBot Logo */}
-        <img className="logoStyle1" src="logopote.png" alt="KryptoBot" />
-      </div>
+        <div className="botStyle1">
+          {/* KryptoBot Logo */}
+          <img className="logoStyle1" src="logopote.png" alt="KryptoBot" />
+        </div>
         {/* Zone de dépôt de fichier */}
         <div className="drop-zone">
-          <span className="drop-zone__prompt">Drop file here or click to upload</span>
+          {fileUploaded ? (
+            <div>
+              <div className="drop-zone__thumb" data-label={fileUploaded.name}></div>
+            </div>
+          ) : (
+            <span className="drop-zone__prompt">Drop file here or click to upload</span>
+          )}
           <input type="file" name="myFile" className="drop-zone__input" />
-        </div>
+          </div>
+        <button className="upload-button" onClick={handleUpload}>Upload File</button>
         <Footer />
       </div>
     </div>
@@ -98,3 +114,4 @@ const Depot = () => {
 };
 
 export default Depot;
+
