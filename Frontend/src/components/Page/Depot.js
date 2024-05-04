@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { create } from 'ipfs-http-client';
-import { createRoot } from 'react-dom/client';
+import axios from 'axios';
+import FormData from 'form-data';
+import fs from 'fs';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import './depot.css';
@@ -65,6 +67,44 @@ const Depot = () => {
       }
     }
   }
+  
+  const pinFileToIPFS = async () => {
+    const formData = new FormData();
+    const src = "path/to/file.png";
+    
+    const file = fs.createReadStream(src)
+    formData.append('file', file)
+    
+    const pinataMetadata = JSON.stringify({
+      name: 'File name',
+    });
+    formData.append('pinataMetadata', pinataMetadata);
+    
+    const pinataOptions = JSON.stringify({
+      cidVersion: 0,
+    })
+    formData.append('pinataOptions', pinataOptions);
+
+    try{
+      const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+        maxBodyLength: "Infinity",
+        headers: {
+          'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+          'Authorization': `Bearer ${JWT}`
+        }
+      });
+      console.log(res.data);
+      if (res.data.IpfsHash) {
+        const ipfsLink = `https://ipfs.io/ipfs/${res.data.IpfsHash}`;
+        setIpfsLink(ipfsLink);
+      } else {
+        throw new Error('Aucun fichier n\'a été ajouté à IPFS.');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async function handleUpload(e) {
     e.preventDefault();
     if (!fileUploaded) {
@@ -81,7 +121,7 @@ const Depot = () => {
   
     try {
       console.log("Tentative d'envoi du fichier à IPFS...");
-      const ipfsLink = await uploadFileToIPFS(fileUploaded);
+      await pinFileToIPFS();
       setFileUploaded(null); // Réinitialiser le fichier après le téléchargement
       console.log('Téléchargement et envoi du fichier terminés avec succès.');
     } catch (error) {
@@ -89,30 +129,6 @@ const Depot = () => {
     }
   }
   
-  async function uploadFileToIPFS(file) {
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      console.log('Envoi du fichier sur IPFS...');
-      const response = await IPFS.addAll(formData);
-      if (response && response[0]) {
-        const ipfsHash = response[0].cid.toString();
-        const ipfsLink = `https://ipfs.io/ipfs/${ipfsHash}`;
-        console.log('Fichier ajouté sur IPFS :', ipfsLink);
-        setIpfsLink(ipfsLink);
-        return ipfsLink;
-      } else {
-        throw new Error('Aucun fichier n\'a été ajouté à IPFS.');
-      }
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout du fichier sur IPFS :', error);
-      throw error;
-    }
-  }
-  
-  
-  
-
   return (
     <div >
       <Header />
