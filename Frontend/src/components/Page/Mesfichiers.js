@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
+import { Button } from '@nextui-org/react';
 import './mesfichiers.css' ;
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
@@ -33,16 +34,19 @@ const Mesfichiers = () => {
                 <tr key={index}>
                   <td>{file}</td>
                   <td>{/* Vous devez définir la date si elle est disponible */}</td>
-                  <td><button>Télécharger</button></td>
+                  <td>  
+                  <Button auto flat color="error" onClick={() => {
+                  window.open('https://cdn.mos.cms.futurecdn.net/TdaG9Gex57AHnRZG79wYKT.jpg', '_blank');
+                }} className="telecharger">
+                Télécharger
+              </Button>  
+                  </td>
                 </tr>
               ))
             )}
           </tbody>
 
   </table>
-
-  {/* Logo */}
-  <img className="logoStyle" src={"logopote.png"} alt="KryptoBot" />
 
       < Footer /> 
 
