@@ -4,9 +4,9 @@ import { Button } from '@nextui-org/react';
 import './mesfichiers.css' ;
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
-import getTokens from '../Mint/demintnft';
+import getTokens from './demintnft';
 
-const tab1 = await getTokens();
+const tab1 = [];
 
 const Mesfichiers = () => {
 
