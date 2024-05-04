@@ -1,3 +1,15 @@
+// Importez les dépendances nécessaires
+import xrpl from 'xrpl';
+
+// Définissez la fonction getNet
+function getNet() {
+  let net;
+  if (document.getElementById("tn").checked) net = "wss://s.altnet.rippletest.net:51233";
+  if (document.getElementById("dn").checked) net = "wss://s.devnet.rippletest.net:51233";
+  return net;
+}
+
+// Définissez la fonction mintNFTWithCID
 async function mintNFTWithCID(cid) {
     // Connectez-vous au ledger et obtenez le portefeuille de compte connecté.
     let net = getNet();
@@ -29,7 +41,6 @@ async function mintNFTWithCID(cid) {
     results += '\nnfts: ' + JSON.stringify(nfts, null, 2);
     standbyBalanceField.value = (await client.getXrpBalance(standby_wallet.address));
     standbyResultField.value = results;
-
 }
 
 export { mintNFTWithCID };

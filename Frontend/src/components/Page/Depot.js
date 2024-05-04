@@ -5,6 +5,8 @@ import FormData from 'form-data';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import './depot.css';
+import { mintNFTWithCID } from './Mint/mintnft';
+
 
 const IPFS = create();
 
@@ -64,13 +66,19 @@ const Depot = () => {
 
     try {
       console.log("Tentative d'envoi du fichier à IPFS...");
-      await pinFileToIPFS();
+      const ipfsLink = await pinFileToIPFS();
       setFileUploaded(null); // Réinitialiser le fichier après le téléchargement
       console.log('Téléchargement et envoi du fichier terminés avec succès.');
+      // Extraire le CID du lien IPFS
+      const cid = ipfsLink;
+      // Appel de mintNFTWithCID avec le CID correspondant
+      mintNFTWithCID(cid);
     } catch (error) {
       console.error('Erreur lors du traitement du fichier :', error);
     }
+    
   }
+  
 
   useEffect(() => {
     document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
