@@ -31,3 +31,5 @@ async function mintNFTWithCID(cid) {
     standbyResultField.value = results;
 
 }
+
+export { mintNFTWithCID };
