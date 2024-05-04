@@ -4,7 +4,7 @@ import './mesfichiers.css' ;
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 
-
+const tab1 = ["fichier 1" , "fichier2" ];
 
 const Mesfichiers = () => {
 
@@ -13,13 +13,37 @@ const Mesfichiers = () => {
       < Header /> 
     <div className="botStyle">
       
-      {/* Speech Bubble */}
-      {/*<div className="bubbleStyle">
-        Voici notre sytème de stockage decentralisé, vous pouvez deposer et retirer vos fichier en toute sécurité.
-      </div>*/}
-      
-      {/* KryptoBot Logo */}
-      <img className="logoStyle" src={"logopote.png"} alt="KryptoBot" />
+    {/* Tableau des fichiers */}
+    <table className="fileTable">
+          <thead>
+            <tr>
+              <th>Nom du fichier</th>
+              <th>Date</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {tab1.length === 0 ? (
+              <tr>
+                <td colSpan="3">Pas de fichier</td>
+              </tr>
+            ) : (
+              tab1.map((file, index) => (
+                <tr key={index}>
+                  <td>{file}</td>
+                  <td>{/* Vous devez définir la date si elle est disponible */}</td>
+                  <td><button>Télécharger</button></td>
+                </tr>
+              ))
+            )}
+          </tbody>
+
+  </table>
+
+  {/* Logo */}
+  <img className="logoStyle" src={"logopote.png"} alt="KryptoBot" />
+
       < Footer /> 
 
     </div>
