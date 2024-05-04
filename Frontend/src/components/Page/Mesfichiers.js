@@ -4,7 +4,7 @@ import { Button } from '@nextui-org/react';
 import './mesfichiers.css' ;
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
-import getTokens from './demintnft';
+import getTokens from './Mint/demintnft';
 
 const tab1 = [];
 
