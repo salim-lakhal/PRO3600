@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { create } from 'ipfs-http-client';
 import axios from 'axios';
 import FormData from 'form-data';
-import fs from 'fs';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import './depot.css';
@@ -12,6 +11,66 @@ const IPFS = create();
 const Depot = () => {
   const [fileUploaded, setFileUploaded] = useState(null);
   const [ipfsLink, setIpfsLink] = useState(null);
+  const [jwtToken, setJwtToken] = useState('');
+
+  const pinFileToIPFS = async () => {
+    const formData = new FormData();
+    formData.append('file', fileUploaded);
+
+    const pinataMetadata = JSON.stringify({
+      name: 'File name',
+    });
+    formData.append('pinataMetadata', pinataMetadata);
+
+    const pinataOptions = JSON.stringify({
+      cidVersion: 0,
+    });
+    formData.append('pinataOptions', pinataOptions);
+
+    try {
+      const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+        maxBodyLength: "Infinity",
+        headers: {
+          'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+          // Assurez-vous de récupérer correctement le JWT pour l'authentification
+          'Authorization': `Bearer ${jwtToken}`
+        }
+      });
+      console.log(res.data);
+      if (res.data.IpfsHash) {
+        const ipfsLink = `https://ipfs.io/ipfs/${res.data.IpfsHash}`;
+        setIpfsLink(ipfsLink);
+      } else {
+        throw new Error('Aucun fichier n\'a été ajouté à IPFS.');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleUpload(e) {
+    e.preventDefault();
+    if (!fileUploaded) {
+      console.error("Aucun fichier sélectionné.");
+      return;
+    }
+
+    if (!(fileUploaded instanceof File)) {
+      console.error("Le fichier n'est pas valide.");
+      return;
+    }
+
+    console.log("Fichier sélectionné :", fileUploaded);
+
+    try {
+      console.log("Tentative d'envoi du fichier à IPFS...");
+      await pinFileToIPFS();
+      setFileUploaded(null); // Réinitialiser le fichier après le téléchargement
+      console.log('Téléchargement et envoi du fichier terminés avec succès.');
+    } catch (error) {
+      console.error('Erreur lors du traitement du fichier :', error);
+    }
+  }
 
   useEffect(() => {
     document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
@@ -67,68 +126,7 @@ const Depot = () => {
       }
     }
   }
-  
-  const pinFileToIPFS = async () => {
-    const formData = new FormData();
-    const src = "path/to/file.png";
-    
-    const file = fs.createReadStream(src)
-    formData.append('file', file)
-    
-    const pinataMetadata = JSON.stringify({
-      name: 'File name',
-    });
-    formData.append('pinataMetadata', pinataMetadata);
-    
-    const pinataOptions = JSON.stringify({
-      cidVersion: 0,
-    })
-    formData.append('pinataOptions', pinataOptions);
 
-    try{
-      const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
-        maxBodyLength: "Infinity",
-        headers: {
-          'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-          'Authorization': `Bearer ${JWT}`
-        }
-      });
-      console.log(res.data);
-      if (res.data.IpfsHash) {
-        const ipfsLink = `https://ipfs.io/ipfs/${res.data.IpfsHash}`;
-        setIpfsLink(ipfsLink);
-      } else {
-        throw new Error('Aucun fichier n\'a été ajouté à IPFS.');
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function handleUpload(e) {
-    e.preventDefault();
-    if (!fileUploaded) {
-      console.error("Aucun fichier sélectionné.");
-      return;
-    }
-  
-    if (!(fileUploaded instanceof File)) {
-      console.error("Le fichier n'est pas valide.");
-      return;
-    }
-  
-    console.log("Fichier sélectionné :", fileUploaded);
-  
-    try {
-      console.log("Tentative d'envoi du fichier à IPFS...");
-      await pinFileToIPFS();
-      setFileUploaded(null); // Réinitialiser le fichier après le téléchargement
-      console.log('Téléchargement et envoi du fichier terminés avec succès.');
-    } catch (error) {
-      console.error('Erreur lors du traitement du fichier :', error);
-    }
-  }
-  
   return (
     <div >
       <Header />
@@ -148,8 +146,8 @@ const Depot = () => {
             <span className="drop-zone__prompt">Drop file here or click to upload</span>
           )}
           <input type="file" name="myFile" className="drop-zone__input" />
-          </div>
-        
+        </div>
+
         {ipfsLink && <p>IPFS Link: {ipfsLink}</p>}
         <Footer />
       </div>
@@ -158,16 +156,3 @@ const Depot = () => {
 };
 
 export default Depot;
-
-
-
-
-
-
-
-
-
-
-
-
-
