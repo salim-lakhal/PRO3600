@@ -13,7 +13,7 @@ const IPFS = create();
 const Depot = () => {
   const [fileUploaded, setFileUploaded] = useState(null);
   const [ipfsLink, setIpfsLink] = useState(null);
-  const [jwtToken, setJwtToken] = useState('');
+  const [jwtToken, setJwtToken] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI2NWZkMmY4ZS0xNmJiLTQ3NmQtOTIzNy1jYjE3ZjE2NWY1NGQiLCJlbWFpbCI6InNhbGltLmxha2hhbEB0ZWxlY29tLXN1ZHBhcmlzLmV1IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjQyZmVlNWQ0NWZmNTMzNDUxYzQwIiwic2NvcGVkS2V5U2VjcmV0IjoiYWQ1ZjI0MDJhZGQwYzNmODRhOGNiM2FlZTkxYTI2MzQ1NGNhZTk3NmEzNzhjM2NmMWU4MGNiNWFjOTlhZjU1NiIsImlhdCI6MTcxNDkwMzIzMn0.XBJenmYfjKsTVMW6GJ1iEh3L3OTE7_pGv29cAJGmIeU');
 
   const pinFileToIPFS = async () => {
     const formData = new FormData();
@@ -72,7 +72,7 @@ const Depot = () => {
       // Extraire le CID du lien IPFS
       const cid = ipfsLink;
       // Appel de mintNFTWithCID avec le CID correspondant
-      mintNFTWithCID(cid);
+      /*mintNFTWithCID(cid); */
     } catch (error) {
       console.error('Erreur lors du traitement du fichier :', error);
     }
@@ -136,30 +136,37 @@ const Depot = () => {
   }
 
   return (
-    <div >
-      <Header />
-      <div className="depot-container">
-        <div className="botStyle1">
-          {/* KryptoBot Logo */}
-          <img className="logoStyle1" src="logopote.png" alt="KryptoBot" />
-        </div>
-        {/* Zone de dépôt de fichier */}
-        <div className="drop-zone">
-          {fileUploaded ? (
-            <div>
-              <div className="drop-zone__thumb" data-label={fileUploaded.name}></div>
-              <button className="upload-button" onClick={handleUpload}>Upload File</button>
-            </div>
-          ) : (
-            <span className="drop-zone__prompt">Drop file here or click to upload</span>
-          )}
-          <input type="file" name="myFile" className="drop-zone__input" />
-        </div>
-
-        {ipfsLink && <p>IPFS Link: {ipfsLink}</p>}
-        <Footer />
-      </div>
+    <div>
+  <Header />
+  <div className="depot-container">
+    <div className="botStyle1">
+      {/* KryptoBot Logo */}
+      <img className="logoStyle1" src="logopote.png" alt="KryptoBot" />
     </div>
+    {/* Zone de dépôt de fichier */}
+    <div className="drop-zone-container">
+      <div className="drop-zone">
+        {fileUploaded ? (
+          <div>
+            <div className="drop-zone__thumb" data-label={fileUploaded.name}></div>
+            <button className="upload-button" onClick={handleUpload}>Upload File</button>
+          </div>
+        ) : (
+          <span className="drop-zone__prompt">Drop file here or click to upload</span>
+        )}
+        <input type="file" name="myFile" className="drop-zone__input" />
+      </div>
+      {ipfsLink && (
+        <div className="ipfs-link-container">
+          <p>IPFS Link:</p>
+          <p>{ipfsLink}</p>
+        </div>
+      )}
+    </div>
+    <Footer />
+  </div>
+</div>
+
   );
 };
 
