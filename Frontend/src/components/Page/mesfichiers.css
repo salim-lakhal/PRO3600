@@ -1,66 +1,35 @@
-.botStyle {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  margin-top: 50px; /* Add space for the speech bubble */
+.fileTableContainer {
+  margin: 25px auto;
+  width: 80%; /* Ajuster la largeur selon les besoins */
+  overflow-x: auto;
+  border-radius: 15px;
 }
 
-.bubbleStyle {
-  position: absolute;
-  bottom: 90%;
-  right: 50%;
-  transform: translateX(50%);
-  padding: 10px;
-  background: #f9f9f9;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  margin: 10px 0;
-  width: max-content;
-  max-width: 300px;
-}
-
-.logoStyle {
-  width: 800px;
-  height: auto;
-  margin-bottom: -30px;
-  opacity: 0.5;
-}
-
-/* Styles pour le conteneur du tableau */
-.tableContainer {
-  margin-top: 20px;
-  overflow-x: auto; /* Ajoute une barre de défilement horizontale si le contenu est trop large */
-}
-
-/* Styliser le tableau */
 .fileTable {
-  width: 100%; /* Le tableau occupe toute la largeur disponible */
-  border-collapse: separate; /* Séparer les bordures des cellules */
-  border-spacing: 0 10px; /* Espacement vertical et horizontal entre les cellules */
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.fileTable th, .fileTable td {
-  border: 1px solid #ddd;
+.fileTable th,
+.fileTable td {
+  border: 1px solid #000000;
   padding: 8px;
   text-align: left;
 }
 
 .fileTable th {
-  background-color: #f2f2f2;
+  background-color: #95a5a6;
 }
 
-/* Styliser les boutons */
-.fileTable button {
+.downloadButton {
   padding: 6px 12px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.fileTable button:hover {
+.downloadButton:hover {
   background-color: #45a049;
 }

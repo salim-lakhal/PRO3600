@@ -5,6 +5,8 @@ import FormData from 'form-data';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import './depot.css';
+import { mintNFTWithCID } from './Mint/mintnft';
+
 
 const IPFS = create();
 
@@ -40,9 +42,6 @@ const Depot = () => {
       if (res.data.IpfsHash) {
         const ipfsLink = `https://ipfs.io/ipfs/${res.data.IpfsHash}`;
         setIpfsLink(ipfsLink);
-        const cid = res.data.IpfsHash;
-        console.log('CID du fichier envoyé :', cid); // Renvoyer le CID dans la console
-        return cid; // Retourne le CID
       } else {
         throw new Error('Aucun fichier n\'a été ajouté à IPFS.');
       }
@@ -67,14 +66,19 @@ const Depot = () => {
 
     try {
       console.log("Tentative d'envoi du fichier à IPFS...");
-      await pinFileToIPFS();
+      const ipfsLink = await pinFileToIPFS();
       setFileUploaded(null); // Réinitialiser le fichier après le téléchargement
       console.log('Téléchargement et envoi du fichier terminés avec succès.');
-      setIpfsLink(ipfsLink); // Mettez à jour l'état avec
+      // Extraire le CID du lien IPFS
+      const cid = ipfsLink;
+      // Appel de mintNFTWithCID avec le CID correspondant
+      mintNFTWithCID(cid);
     } catch (error) {
       console.error('Erreur lors du traitement du fichier :', error);
     }
+    
   }
+  
 
   useEffect(() => {
     document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
@@ -151,12 +155,8 @@ const Depot = () => {
           )}
           <input type="file" name="myFile" className="drop-zone__input" />
         </div>
-        {ipfsLink && (
-  <div>
-    <p>IPFS Link: {ipfsLink}</p>
-    <p>CID du fichier envoyé : {ipfsLink.replace('https://ipfs.io/ipfs/', '')}</p>
-  </div>
-)}
+
+        {ipfsLink && <p>IPFS Link: {ipfsLink}</p>}
         <Footer />
       </div>
     </div>

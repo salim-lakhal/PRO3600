@@ -1,3 +1,4 @@
+
 async function getTokens() {
     
     const standby_wallet = xrpl.Wallet.fromSeed(standbySeedField.value);
@@ -30,3 +31,4 @@ async function getTokens() {
 async function getNFTuri(nft) {
     return convertHexToString(nft.uri);
 }
+export { getTokens, getNFTuri};

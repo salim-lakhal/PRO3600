@@ -1,59 +1,64 @@
 import React from 'react';
-import { Link, Routes, Route } from 'react-router-dom';
 import { Button } from '@nextui-org/react';
-import './mesfichiers.css' ;
+import './mesfichiers.css';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
-import getTokens from './Mint/demintnft';
+import { getTokens } from './Mint/demintnft';
 
-const tab1 = [];
 
-const Mesfichiers = () => {
+// Pour l'exemple, j'utiliserai des noms de fichiers statiques
+const files = getTokens();
 
+ /* Format du tableau { name: 'fichier1.txt', date: '2024-05-01' },
+  { name: 'fichier2.jpg', date: '2024-05-02' },
+  { name: 'fichier3.pdf', date: '2024-05-03' },*/
+
+const MesFichiers = () => {
   return (
     <div>
-      < Header /> 
-    <div className="botStyle">
-      
-    {/* Tableau des fichiers */}
-    <table className="fileTable">
+      <Header />
+      <div className="fileTableContainer">
+        <table className="fileTable">
           <thead>
             <tr>
               <th>Nom du fichier</th>
               <th>Date</th>
-              <th></th>
+              <th>Télécharger</th>
             </tr>
           </thead>
-
           <tbody>
-            {tab1.length === 0 ? (
+            {files.length === 0 ? (
               <tr>
                 <td colSpan="3">Pas de fichier</td>
               </tr>
             ) : (
-              tab1.map((file, index) => (
+              files.map((file, index) => (
                 <tr key={index}>
-                  <td>{file}</td>
-                  <td>{/* Vous devez définir la date si elle est disponible */}</td>
-                  <td>  
-                  <Button auto flat color="error" onClick={() => {
-                  window.open('https://cdn.mos.cms.futurecdn.net/TdaG9Gex57AHnRZG79wYKT.jpg', '_blank');
-                }} className="telecharger">
-                Télécharger
-              </Button>  
+                  <td>{file.name}</td>
+                  <td>{file.date}</td>
+                  <td>
+                    <Button
+                      auto
+                      flat
+                      color="error"
+                      onClick={() => {
+                        // Ici, j'utilise une image aléatoire comme lien de téléchargement pour l'exemple
+                        window.open('https://cdn.mos.cms.futurecdn.net/TdaG9Gex57AHnRZG79wYKT.jpg', '_blank');
+                      }}
+                      className="downloadButton"
+                    >
+                      Télécharger
+                    </Button>
                   </td>
                 </tr>
               ))
             )}
           </tbody>
-
-  </table>
-
-      < Footer /> 
-
-    </div>
+        </table>
+      </div>
+      <Footer />
     </div>
   );
 };
 
-export default Mesfichiers;
+export default MesFichiers;
