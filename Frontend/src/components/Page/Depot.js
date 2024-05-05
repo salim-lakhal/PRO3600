@@ -72,7 +72,7 @@ const Depot = () => {
       // Extraire le CID du lien IPFS
       const cid = ipfsLink;
       // Appel de mintNFTWithCID avec le CID correspondant
-      /*mintNFTWithCID(cid); */
+      mintNFTWithCID(cid); 
     } catch (error) {
       console.error('Erreur lors du traitement du fichier :', error);
     }

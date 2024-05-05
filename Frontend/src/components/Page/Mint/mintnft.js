@@ -1,4 +1,4 @@
-import xrpl from 'xrpl';
+import {Client, convertStringToHex } from 'xrpl';
 
 const flagsValue = 123; // Valeur pour le champ "Flags"
 const transferFeeValue = 1; // Valeur pour le champ "TransferFee"
@@ -10,16 +10,19 @@ const walletInfo = {
     sequenceNumber: 418608,
 };
 
+const client = new Client("wss://s.altnet.rippletest.net:51233/");
+
+
 async function mintNFTWithCID(cid) {
     // Initialisez et configurez votre client XRPL
-    const client = new xrpl.Client("wss://s.devnet.rippletest.net:51233");
     await client.connect();
+    /*console.log("Connected to the XRPL",xrpl);*/
 
     // Définissez la transaction.
     const transactionJson = {
         "TransactionType": "NFTokenMint",
         "Account": walletInfo.address, // Utilisez l'adresse du portefeuille connecté
-        "URI": xrpl.convertStringToHex(cid), // Utilisez le CID passé comme paramètre
+        "URI": convertStringToHex(cid), // Utilisez le CID passé comme paramètre
         "Flags": flagsValue,
         "TransferFee": transferFeeValue,
         "NFTokenTaxon": 0 // Required, but if you have no use for it, set to zero.
