@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "react-router-dom": "^6.22.1"
+    "react-router-dom": "^6.22.1",
+    "xrpl": "^3.0.0"
   }
 }

@@ -14,7 +14,7 @@ const Header = () => {
       <div className="header-content">
         <div className="header-left">
           <img src="logo.png" alt="logo" className="log" />
-          <h1 className="title">Stockage Décentralisé</h1>
+          <h1 className="title">Driv'INT</h1>
           <a href="/home" className="nav-link">Home</a>        
           <a href="/depot" className="nav-link">Dépôt de fichier</a>
           <a href="/mesfichiers" className="nav-link">Mes fichiers</a>
