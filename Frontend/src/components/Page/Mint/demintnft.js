@@ -1,4 +1,3 @@
-
 async function getTokens() {
     
     const standby_wallet = xrpl.Wallet.fromSeed(standbySeedField.value);
