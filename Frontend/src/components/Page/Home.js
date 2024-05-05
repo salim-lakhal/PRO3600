@@ -5,6 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
+
 const Home = () => {
   return (
     <div>
