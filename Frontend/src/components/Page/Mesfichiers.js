@@ -6,12 +6,13 @@ import Header from '../Header/Header';
 import { getTokens } from './Mint/demintnft';
 
 
-// Pour l'exemple, j'utiliserai des noms de fichiers statiques
-const files = getTokens();
 
- /* Format du tableau { name: 'fichier1.txt', date: '2024-05-01' },
+// Pour l'exemple, j'utiliserai des noms de fichiers statiques
+const files = [{ name: 'fichier1.txt', date: '2024-05-01' },/*getTokens(); */
   { name: 'fichier2.jpg', date: '2024-05-02' },
-  { name: 'fichier3.pdf', date: '2024-05-03' },*/
+  { name: 'fichier3.pdf', date: '2024-05-03' } ]
+
+ /* Format du tableau ,*/
 
 const MesFichiers = () => {
   return (
