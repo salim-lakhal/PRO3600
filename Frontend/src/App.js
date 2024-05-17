@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { createRoot } from 'react-dom/client';
 import { WalletProvider } from './WalletProvider';
 import Arrivee from './components/Page/Arrivee'; 
 import Home from './components/Page/Home';

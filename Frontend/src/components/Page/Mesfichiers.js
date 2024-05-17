@@ -1,20 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@nextui-org/react';
 import './mesfichiers.css';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import { getTokens } from './Mint/demintnft';
-
-
-
-// Pour l'exemple, j'utiliserai des noms de fichiers statiques
-const files = [{ name: 'fichier1.txt', date: '2024-05-01' },/*getTokens(); */
-  { name: 'fichier2.jpg', date: '2024-05-02' },
-  { name: 'fichier3.pdf', date: '2024-05-03' } ]
-
- /* Format du tableau ,*/
+import { burnToken } from './Mint/burnnft'; // Importez la fonction burnToken
 
 const MesFichiers = () => {
+  const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    async function fetchFiles() {
+      const { nftArray } = await getTokens();
+      setFiles(nftArray);
+    }
+
+    // Appel initial pour charger les fichiers
+    fetchFiles();
+
+    // Mettre à jour les fichiers toutes les 1 secondes
+    const intervalId = setInterval(fetchFiles, 1000);
+
+    // Nettoyage de l'intervalle lorsque le composant est démonté
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const handleDelete = async (nftId) => {
+    try {
+      await burnToken(nftId, "sEdTJwTTNmCH23Su1zwBHFYJT9Khswa", 'wss://s.altnet.rippletest.net:51233/'); // Appeler burnToken avec l'ID de la NFT
+      setFiles((prevFiles) => prevFiles.filter(file => file.id !== nftId)); // Supprimez le fichier de l'état local
+    } catch (error) {
+      console.error('Error burning token:', error);
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -23,8 +42,8 @@ const MesFichiers = () => {
           <thead>
             <tr>
               <th>Nom du fichier</th>
-              <th>Date</th>
-              <th>Télécharger</th>
+              <th>Visualiser</th>
+              <th>Supprimer</th>
             </tr>
           </thead>
           <tbody>
@@ -36,19 +55,28 @@ const MesFichiers = () => {
               files.map((file, index) => (
                 <tr key={index}>
                   <td>{file.name}</td>
-                  <td>{file.date}</td>
                   <td>
                     <Button
                       auto
                       flat
                       color="error"
                       onClick={() => {
-                        // Ici, j'utilise une image aléatoire comme lien de téléchargement pour l'exemple
-                        window.open('https://cdn.mos.cms.futurecdn.net/TdaG9Gex57AHnRZG79wYKT.jpg', '_blank');
+                        window.open(file.link, '_blank');
                       }}
                       className="downloadButton"
                     >
-                      Télécharger
+                      Visualiser
+                    </Button>
+                  </td>
+                  <td>
+                    <Button
+                      auto
+                      flat
+                      color="error"
+                      onClick={() => handleDelete(parseInt(file.name.match(/\d+$/)[0]))} // Appeler handleDelete avec l'ID du NFT
+                      className="deleteButton"
+                    >
+                      Supprimer
                     </Button>
                   </td>
                 </tr>

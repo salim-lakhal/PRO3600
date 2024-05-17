@@ -6,9 +6,12 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import './depot.css';
 import { mintNFTWithCID } from './Mint/mintnft';
+import { Client, Wallet, convertStringToHex } from 'xrpl';
 
 
 const IPFS = create();
+const wallet = Wallet.fromSeed('sEdTJwTTNmCH23Su1zwBHFYJT9Khswa');
+
 
 const Depot = () => {
   const [fileUploaded, setFileUploaded] = useState(null);
@@ -42,6 +45,7 @@ const Depot = () => {
       if (res.data.IpfsHash) {
         const ipfsLink = `https://ipfs.io/ipfs/${res.data.IpfsHash}`;
         setIpfsLink(ipfsLink);
+        return res.data.IpfsHash; // Retourner le CID
       } else {
         throw new Error('Aucun fichier n\'a été ajouté à IPFS.');
       }
@@ -50,34 +54,47 @@ const Depot = () => {
     }
   }
 
+  async function onClickHandler(e) {
+    try {
+      await handleUpload(e);
+      const cid = await pinFileToIPFS();
+      console.log("Upload terminé. Appel de la fonction suivante...");
+      // Appel de la fonction suivante qui utilise le lien IPFS et le wallet
+      await mintNFTWithCID(cid, wallet);
+      console.log("Fichier téléchargé et NFT créé avec succès.");
+
+    } catch (error) {
+      console.error("Erreur lors du chargement ou du traitement du fichier :", error);
+    }
+  }
+
   async function handleUpload(e) {
     e.preventDefault();
     if (!fileUploaded) {
-      console.error("Aucun fichier sélectionné.");
-      return;
+        console.error("Aucun fichier sélectionné.");
+        return;
     }
 
     if (!(fileUploaded instanceof File)) {
-      console.error("Le fichier n'est pas valide.");
-      return;
+        console.error("Le fichier n'est pas valide.");
+        return;
     }
 
     console.log("Fichier sélectionné :", fileUploaded);
 
     try {
-      console.log("Tentative d'envoi du fichier à IPFS...");
-      const ipfsLink = await pinFileToIPFS();
-      setFileUploaded(null); // Réinitialiser le fichier après le téléchargement
-      console.log('Téléchargement et envoi du fichier terminés avec succès.');
-      // Extraire le CID du lien IPFS
-      const cid = ipfsLink;
-      // Appel de mintNFTWithCID avec le CID correspondant
-      /*mintNFTWithCID(cid); */
+        console.log("Tentative d'envoi du fichier à IPFS...");
+        const ipfsLink = await pinFileToIPFS();
+        setFileUploaded(null); // Réinitialiser le fichier après le téléchargement
+        console.log('Téléchargement et envoi du fichier terminés avec succès.');
+        return ipfsLink; // Retourne le lien IPFS
     } catch (error) {
-      console.error('Erreur lors du traitement du fichier :', error);
+        console.error('Erreur lors du traitement du fichier :', error);
+        throw error; // Propage l'erreur
     }
-    
-  }
+}
+
+  
   
 
   useEffect(() => {
@@ -149,7 +166,7 @@ const Depot = () => {
         {fileUploaded ? (
           <div>
             <div className="drop-zone__thumb" data-label={fileUploaded.name}></div>
-            <button className="upload-button" onClick={handleUpload}>Upload File</button>
+            <button className="upload-button" onClick={onClickHandler}>Upload File</button>
           </div>
         ) : (
           <span className="drop-zone__prompt">Drop file here or click to upload</span>
