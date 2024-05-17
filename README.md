@@ -43,7 +43,6 @@ Pour visualiser le site voici les étapes à suivre :
   - npm install # Permet d'installer les dépendances
   - npm i react-router-dom # Permet d'installer des dépendances
   - npm install --save xrpl
-  - npm install xrpl fast-text-encoding react-native-get-random-values
   - npm install ipfs-http-client
   - npm install axios
   - npm run build # Permet de créer une version de production optimisée de l'application
